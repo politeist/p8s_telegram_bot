@@ -18,6 +18,10 @@ def text(update, context):
     text_received = update.message.text
     update.message.reply_text(f'did you said "{text_received}" ?')
 
+def meet(update, context):
+    meeting_room = os.getenv('GMEET')
+    update.message.reply_text(meeting_room) 
+
 def main():
     TOKEN = os.getenv('TOKEN')
 
@@ -29,6 +33,7 @@ def main():
     # add handlers for start and help commands
     dispatcher.add_handler(CommandHandler("start", start))
     dispatcher.add_handler(CommandHandler("help", help))
+    dispatcher.add_handler(CommandHandler("meet", meet))
 
     # add an handler for normal text (not commands)
     dispatcher.add_handler(MessageHandler(Filters.text, text))
