@@ -1,12 +1,19 @@
 from utils import logger
 
+from dataclasses import dataclass
 from typing import Callable, List, Optional
 
 from telegram.ext import Handler
 
 
+@dataclass
+class App:
+    handler: Callable
+    instance: Optional[Handler] = None
+
+
 class Loader:
-    _APPS = []
+    _APPS: List[App] = []
 
     @classmethod
     def clean(cls):

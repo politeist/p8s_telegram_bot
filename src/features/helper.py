@@ -6,7 +6,7 @@ from loader import loader_apps
 
 def cmd_help(update: Update, contex: CallbackContext):
     helper = ['Available commands:']
-    for app in Loader.apps():
+    for app in loader_apps.apps():
         if not app.__doc__:
             helper.append(f'/{app.__name__}')
         else:
