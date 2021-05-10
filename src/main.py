@@ -19,8 +19,10 @@ def features_discovery():
         feature_module = f'features.{app}'
         try:
             import_module(feature_module)
-        except Exception as e:
-            logger.error(f"Error to load feature: {app}:{e}")
+        except ImportError as import_error:
+            logger.error(f"Could not import due to error: {import_error}")
+        except Exception as error:
+            logger.error(f"Error to load feature: {app}:{error}")
 
 
 def start(update, context):

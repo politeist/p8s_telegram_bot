@@ -1,4 +1,2 @@
-logging
 nltk==3.6.2
 python-telegram-bot==13.5
-
