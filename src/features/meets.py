@@ -3,7 +3,7 @@ import os
 from telegram.ext import CallbackContext, CommandHandler
 from telegram.update import Update
 
-from loader import loader_apps
+from loader import LoaderApps
 
 
 def cmd_meet(update: Update, contex: CallbackContext):
@@ -11,7 +11,7 @@ def cmd_meet(update: Update, contex: CallbackContext):
     update.message.reply_text(meeting_room)
 
 
-@loader_apps.handler
+@LoaderApps.handler
 def meet():
     """
         /meet - Return our simple gmeet link

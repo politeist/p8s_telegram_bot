@@ -1,13 +1,13 @@
 from telegram.ext import CallbackContext, CommandHandler
 from telegram.update import Update
 
-from loader import loader_apps
+from loader import LoaderApps
 
 EXCLUDED_HANDLERS = ["quiz_response"]
 
 def cmd_help(update: Update, contex: CallbackContext):
     helper = ['Available commands:']
-    for app in loader_apps.apps():
+    for app in LoaderApps.apps():
         if app.__name__ not in EXCLUDED_HANDLERS:
             if not app.__doc__:
                 helper.append(f'/{app.__name__}')
@@ -16,7 +16,7 @@ def cmd_help(update: Update, contex: CallbackContext):
     update.message.reply_text('\n'.join(helper))
 
 
-@loader_apps.handler
+@LoaderApps.handler
 def help():
     """
         /help - Return all handlers available

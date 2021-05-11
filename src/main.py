@@ -6,7 +6,7 @@ from importlib import import_module
 
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
-from loader import loader_apps
+from loader import LoaderApps
 from settings import TOKEN, APPS
 from utils import logger
 
@@ -71,7 +71,7 @@ def main():
     dispatcher = updater.dispatcher
 
     features_discovery()
-    loader_apps.setup(dispatcher)
+    LoaderApps.setup(dispatcher)
 
     # add handlers for start and help commands
     dispatcher.add_handler(CommandHandler("start", start))
