@@ -1,3 +1,4 @@
+'''Retrieve configvar, preferably from ENV'''
 import os
 
 APPS = [

@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: "{{ include "p8sBot.fullname" . }}-test-connection"
+  name: "{{ include "p8sbot.fullname" . }}-test-connection"
   labels:
-    {{- include "p8sBot.labels" . | nindent 4 }}
+    {{- include "p8sbot.labels" . | nindent 4 }}
   annotations:
     "helm.sh/hook": test
 spec:
@@ -11,5 +11,5 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args: ['{{ include "p8sBot.fullname" . }}:{{ .Values.service.port }}']
+      args: ['{{ include "p8sbot.fullname" . }}:{{ .Values.service.port }}']
   restartPolicy: Never

@@ -1,0 +1,15 @@
+[MASTER]
+disable=
+    C0114, # missing-module-docstring
+    C0115, # missing-module-docstring
+    C0116, # Missing function or method docstring
+    E0401, # Unable to import telegram.ext lib
+    E1101, # Instance of 'SQLAlchemy' has no 'DateTime' member
+    E0611, # Unable to import Env Vars
+    F0001, # No module named XXXXXXXX
+    R0201, # Method could be a function (no-self-use)
+    R0903, # Too few public methods
+
+
+
+ignored-classes=SQLObject,Registrant,scoped_session

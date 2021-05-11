@@ -2,14 +2,14 @@
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "p8sBot.fullname" . }}
+  name: {{ include "p8sbot.fullname" . }}
   labels:
-    {{- include "p8sBot.labels" . | nindent 4 }}
+    {{- include "p8sbot.labels" . | nindent 4 }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "p8sBot.fullname" . }}
+    name: {{ include "p8sbot.fullname" . }}
   minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   metrics:

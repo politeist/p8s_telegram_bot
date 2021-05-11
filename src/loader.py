@@ -1,9 +1,11 @@
-from utils import logger
-
+''' Class Loader '''
 from dataclasses import dataclass
 from typing import Callable, List, Optional
 
 from telegram.ext import Handler
+
+from utils import logger
+
 
 
 @dataclass
@@ -39,4 +41,4 @@ class Loader:
 
 
 # Set all methods back in here
-loader_apps = Loader
+LoaderApps = Loader
