@@ -1,1 +1,2 @@
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+'''Reader will be responsible fro reading the telegram chat group'''
+from telegram.ext import CommandHandler, MessageHandler, Filters
