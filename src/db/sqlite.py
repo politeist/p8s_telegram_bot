@@ -1,5 +1,4 @@
 import os
-import contextlib
 import sqlite3
 
 from typing import Optional
@@ -8,11 +7,10 @@ LOCAL_PATH = os.path.dirname(os.path.abspath(__file__))
 
 DB_PATH = f"{LOCAL_PATH}/../data/quiz.db"
 
-print(DB_PATH)
 
-class SQLite(object):
+class SQLite:
     def __init__(self, db: Optional[str] = DB_PATH):
-        self.db=db
+        self.db = db
         self.conn = None
 
     def __enter__(self):
@@ -20,7 +18,7 @@ class SQLite(object):
         self.conn.row_factory = sqlite3.Row
         return self.conn.cursor()
 
-    def __exit__(self, type, value, traceback):
+    def __exit__(self, _type, value, traceback):
         self.conn.commit()
         self.conn.close()
 

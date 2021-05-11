@@ -1,5 +1,7 @@
-from settings import LOG_LEVEL
 import logging
+
+from settings import LOG_LEVEL
+
 
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
