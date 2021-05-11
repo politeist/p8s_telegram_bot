@@ -1,3 +1,5 @@
+import random
+
 from dataclasses import dataclass
 from typing import Optional, List
 
@@ -10,6 +12,20 @@ from telegram import (
 from loader import LoaderApps
 from utils import logger
 from db.sqlite import DbConnection
+
+ERRORS_STICKERS = [
+    "CAACAgQAAxkBAAECSxdgmsm5LY9-QMotvNFbWBDRWpP88gAC7QEAAheqxwABXETOigPW7vUfBA", # Homer
+    "CAACAgEAAxkBAAECSxlgmsnoWr1UGxHoOXVYB8vZzcCcmgACDQADh0KUClSrGCL_QP4FHwQ", # Faustop
+    "CAACAgIAAxkBAAECSyFgmsqEtNwfZ752FY7retG3EffwxAAClAADF64RA0kNX5l8ULvFHwQ" # Spidy
+    ""
+]
+
+CORRECT_STICKERS = [
+    "CAACAgEAAxkBAAECSxtgmspEPOmHYamBj1VjTUn1Bk2rOwAC_gIAAodClAr5Fn2X7dW5ax8E", # Faustop
+    "CAACAgEAAxkBAAECSx1gmspe7ZC0zEwmNJ-snGQYtjS3hwACywYAAodClArep0IMdrL2KB8E", # Faustop
+    "CAACAgEAAxkBAAECSx9gmspgNmFkAU16Xtv6gYMl9whT3gACyQYAAodClApOHAsKsaPAMx8E", # Faustop
+    "CAACAgIAAxkBAAECSyNgmsqWukeX43lBS2MpMK7cK_FfhwACrQADF64RA9lQTvLyFpnjHwQ" # Don't know the name
+]
 
 
 @dataclass
@@ -76,6 +92,10 @@ def cmd_quiz(update: Update, context: CallbackContext):
         'allows_multiple_answers': question.is_multiple_answers,
         'explanation_parse_mode': ParseMode.MARKDOWN_V2
     }
+    if args['allows_multiple_answers']:
+        args['correct_option_id'] = args['correct_option_id'].split(',')
+        args['type'] = Poll.REGULAR
+
     message = update.effective_message.reply_poll(**args)
     # Save some info about the poll the bot_data for later use in receive_quiz_answer
     payload = {
@@ -90,17 +110,35 @@ def cmd_quiz(update: Update, context: CallbackContext):
 
 def receive_quiz_answer(update: Update, context: CallbackContext) -> None:
     """ Close quiz once participants took it """
+    correct_answers = []
+
     if update.poll.is_closed:
         return
     try:
+        for idx, opt in enumerate(update.poll.options):
+            if opt.voter_count:
+                correct_answers.append(idx)
+
         quiz_data = context.bot_data[update.poll.id]
-        logger.info(f"Data: {quiz_data}, Pool: {update.poll.__dict__}")
-
-        logger.info(f"Upd: {update.__dict__}, cont: {context.__dict__}")
         question = get_quiz_id(quiz_data["question_id"])
-        print(question)
 
-        #if update.pool.correct_option_id == get_quiz_id()
+        if type(question.correct_option_id) == int:
+            correct_ids = [question.correct_option_id]
+
+        if type(question.correct_option_id) == str:
+            correct_ids = [int(x) for x in question.correct_option_id.split(',')]
+
+        if correct_answers and correct_answers == correct_ids:
+            context.bot.send_sticker(
+                quiz_data["chat_id"],
+                random.choice(CORRECT_STICKERS)
+            )
+
+        else:
+            context.bot.send_sticker(
+                quiz_data["chat_id"],
+                random.choice(ERRORS_STICKERS)
+            )
         context.bot.send_message(
             chat_id=quiz_data["chat_id"],
             text=question.extra_args
