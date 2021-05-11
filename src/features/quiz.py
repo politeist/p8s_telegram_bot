@@ -14,7 +14,7 @@ from telegram import (
     ReplyKeyboardRemove,
     Update,
 )
-from loader import loader_apps
+from loader import LoaderApps
 from utils import logger
 from db.sqlite import DbConnection
 
@@ -111,7 +111,7 @@ def receive_quiz_answer(update: Update, context: CallbackContext) -> None:
     context.bot.stop_poll(quiz_data["chat_id"], quiz_data["message_id"])
 
 
-@loader_apps.handler
+@LoaderApps.handler
 def quiz_me():
     """
         /quizMe - Generate sample quiz (It quiz!)
@@ -119,7 +119,7 @@ def quiz_me():
     return CommandHandler("quizMe", cmd_quiz)
 
 
-@loader_apps.handler
+@LoaderApps.handler
 def quiz_response():
     return PollHandler(
         receive_quiz_answer,
