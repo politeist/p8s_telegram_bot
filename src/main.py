@@ -10,6 +10,14 @@ from loader import LoaderApps
 from settings import TOKEN, APPS
 from utils import logger
 
+STICKERS = [
+    "CAACAgEAAxkBAAECStJgmoWxfRZbQlNGWpeE3NaqEWYf8QACNwQAAnTnKwIlivXJuy2BSh8E",
+    "CAACAgIAAxkBAAECStRgmoYCD8Gu47QRekNoDt5GxKDsLwACawEAAlrjihfqNIInyEgvQR8E",
+    "CAACAgIAAxkBAAECStZgmoYiuofAXBpCkvA-_45wH8Vc-AACWAEAAlrjihdmuBpbgPVJqB8E",
+    "CAACAgEAAxkBAAECSthgmoY7PmF5uSsaeUvY8ZlPHmYieAACTQIAAnTnKwLmJx6dp10G6B8E",
+    "CAACAgEAAxkBAAECStpgmoZc2O9WCrIBuTuXHGymu_f_gAACfAADv4XHBbjt-hzAn-V2HwQ"
+]
+
 
 def features_discovery():
     """
@@ -47,14 +55,8 @@ def text(update, context):
         function to handle normal text
     """
     text_received = update.message.text
-    STICKERS = [
-        "CAACAgEAAxkBAAECStJgmoWxfRZbQlNGWpeE3NaqEWYf8QACNwQAAnTnKwIlivXJuy2BSh8E",
-        "CAACAgIAAxkBAAECStRgmoYCD8Gu47QRekNoDt5GxKDsLwACawEAAlrjihfqNIInyEgvQR8E",
-        "CAACAgIAAxkBAAECStZgmoYiuofAXBpCkvA-_45wH8Vc-AACWAEAAlrjihdmuBpbgPVJqB8E",
-        "CAACAgEAAxkBAAECSthgmoY7PmF5uSsaeUvY8ZlPHmYieAACTQIAAnTnKwLmJx6dp10G6B8E",
-        "CAACAgEAAxkBAAECStpgmoZc2O9WCrIBuTuXHGymu_f_gAACfAADv4XHBbjt-hzAn-V2HwQ"
-    ]
-    if update.message.from_user.username == 'vcali' or update.message.from_user.username == 'rondineli':
+
+    if update.message.from_user.username == 'vcali':
         chat = update.message.chat
         context.bot.send_sticker(chat.id, random.choice(STICKERS))
         update.message.reply_text(f'🖕 vai procurar o q fazer {update.message.from_user.username}!')

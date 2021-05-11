@@ -1,18 +1,11 @@
-import os
-
 from dataclasses import dataclass
-from typing import Optional, List, Callable
+from typing import Optional, List
 
 from telegram.ext import CallbackContext, CommandHandler, PollHandler
-from telegram.update import Update
 from telegram import (
     Poll,
     ParseMode,
-    KeyboardButton,
-    KeyboardButtonPollType,
-    ReplyKeyboardMarkup,
-    ReplyKeyboardRemove,
-    Update,
+    Update
 )
 from loader import LoaderApps
 from utils import logger
@@ -35,30 +28,33 @@ class PersistQuiz:
     _QUESTIONS: List[Question] = []
 
     @classmethod
-    def clean(cls):
+    def clean(cls) -> None:
         cls._QUESTIONS = []
 
     @classmethod
-    def questions(cls):
+    def questions(cls) -> list:
         _questions = []
         for question in cls._QUESTIONS:
             _questions.append(question)
         return _questions
 
     @classmethod
-    def add_question(cls, **kwargs):
+    def add_question(cls, **kwargs) -> dict:
         question = Question(**kwargs)
         cls._QUESTIONS.append(question)
         return question
 
     @classmethod
-    def get_question(cls, question_id: int):
+    def get_question(cls, question_id: int) -> dict:
         for question in cls._QUESTIONS:
             if question.__dict__.get('question_id') == question_id:
                 return question
+        return {}
+
 
 get_quiz_id = PersistQuiz.get_question
 register_question = PersistQuiz.add_question
+
 
 def cmd_quiz(update: Update, context: CallbackContext):
     """Send a predefined poll"""
@@ -74,7 +70,7 @@ def cmd_quiz(update: Update, context: CallbackContext):
 
     args = {
         'question': text,
-        'options': [x.replace('.', '-') for x in question.question_options.split('\n')],
+        'options': question.question_options.split('\n'),
         'type':Poll.QUIZ,
         'correct_option_id': question.correct_option_id,
         'allows_multiple_answers': question.is_multiple_answers,
@@ -83,7 +79,11 @@ def cmd_quiz(update: Update, context: CallbackContext):
     message = update.effective_message.reply_poll(**args)
     # Save some info about the poll the bot_data for later use in receive_quiz_answer
     payload = {
-        message.poll.id: {"chat_id": update.effective_chat.id, "question_id": question.question_id, "message_id": message.message_id}
+        message.poll.id: {
+            "chat_id": update.effective_chat.id,
+            "question_id": question.question_id,
+            "message_id": message.message_id
+        }
     }
     context.bot_data.update(payload)
 
