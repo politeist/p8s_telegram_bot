@@ -1,5 +1,6 @@
 import os
 import sys
+import random
 
 from importlib import import_module
 
@@ -35,7 +36,7 @@ def error(update, context):
     """
         function to handle errors occured in the dispatcher
     """
-    logger.info(context.error)
+    logger.error(context.error)
     update.message.reply_text('Fui pegar um back, talvez ja ja eu volte!')
 
 
@@ -44,7 +45,19 @@ def text(update, context):
         function to handle normal text
     """
     text_received = update.message.text
-    update.message.reply_text(f'did you said "{text_received}" ?')
+    STICKERS = [
+        "CAACAgEAAxkBAAECStJgmoWxfRZbQlNGWpeE3NaqEWYf8QACNwQAAnTnKwIlivXJuy2BSh8E",
+        "CAACAgIAAxkBAAECStRgmoYCD8Gu47QRekNoDt5GxKDsLwACawEAAlrjihfqNIInyEgvQR8E",
+        "CAACAgIAAxkBAAECStZgmoYiuofAXBpCkvA-_45wH8Vc-AACWAEAAlrjihdmuBpbgPVJqB8E",
+        "CAACAgEAAxkBAAECSthgmoY7PmF5uSsaeUvY8ZlPHmYieAACTQIAAnTnKwLmJx6dp10G6B8E",
+        "CAACAgEAAxkBAAECStpgmoZc2O9WCrIBuTuXHGymu_f_gAACfAADv4XHBbjt-hzAn-V2HwQ"
+    ]
+    if update.message.from_user.username == 'vcali' or update.message.from_user.username == 'rondineli':
+        chat = update.message.chat
+        context.bot.send_sticker(chat.id, random.choice(STICKERS))
+        update.message.reply_text(f'🖕 vai procurar o q fazer {update.message.from_user.username}!')
+        return
+    update.message.reply_text(f'did you say "{text_received}" ?')
 
 
 def main():
