@@ -16,16 +16,19 @@ from db.sqlite import DbConnection
 ERRORS_STICKERS = [
     "CAACAgQAAxkBAAECSxdgmsm5LY9-QMotvNFbWBDRWpP88gAC7QEAAheqxwABXETOigPW7vUfBA", # Homer
     "CAACAgEAAxkBAAECSxlgmsnoWr1UGxHoOXVYB8vZzcCcmgACDQADh0KUClSrGCL_QP4FHwQ", # Faustop
-    "CAACAgIAAxkBAAECSyFgmsqEtNwfZ752FY7retG3EffwxAAClAADF64RA0kNX5l8ULvFHwQ" # Spidy
-    ""
+    "CAACAgIAAxkBAAECSyFgmsqEtNwfZ752FY7retG3EffwxAAClAADF64RA0kNX5l8ULvFHwQ", # Spidy
+    "CAACAgEAAxkBAAECSyxgmuCY7GGxGdXEDEsmSDBW4Y3LQgACDgUAAnTnKwInbLm7_yaPUh8E" # meme
 ]
 
 CORRECT_STICKERS = [
     "CAACAgEAAxkBAAECSxtgmspEPOmHYamBj1VjTUn1Bk2rOwAC_gIAAodClAr5Fn2X7dW5ax8E", # Faustop
     "CAACAgEAAxkBAAECSx1gmspe7ZC0zEwmNJ-snGQYtjS3hwACywYAAodClArep0IMdrL2KB8E", # Faustop
     "CAACAgEAAxkBAAECSx9gmspgNmFkAU16Xtv6gYMl9whT3gACyQYAAodClApOHAsKsaPAMx8E", # Faustop
-    "CAACAgIAAxkBAAECSyNgmsqWukeX43lBS2MpMK7cK_FfhwACrQADF64RA9lQTvLyFpnjHwQ" # Don't know the name
+    "CAACAgIAAxkBAAECSyNgmsqWukeX43lBS2MpMK7cK_FfhwACrQADF64RA9lQTvLyFpnjHwQ", # Don't know the name
+    "CAACAgEAAxkBAAECSytgmuCXcyj7aWWwKyjsxwuvbRKlagACDwUAAnTnKwIPKW_c_bdJdh8E" # meme
 ]
+
+DB = DbConnection()
 
 
 @dataclass
@@ -74,13 +77,12 @@ register_question = PersistQuiz.add_question
 
 def cmd_quiz(update: Update, context: CallbackContext):
     """Send a predefined poll"""
-    db = DbConnection()
-    result = db.query('SELECT * from quiz_db order by RANDOM() limit 1;')[0]
+    result = DB.query('SELECT * from quiz_db order by RANDOM() limit 1;')[0]
     question = register_question(**result)
 
     if len(question.question) > 300:
         update.message.reply_text(question.question)
-        text = "What the folloing options?"
+        text = "What the following options?"
     else:
         text = question.question
 
@@ -98,6 +100,7 @@ def cmd_quiz(update: Update, context: CallbackContext):
 
     message = update.effective_message.reply_poll(**args)
     # Save some info about the poll the bot_data for later use in receive_quiz_answer
+    print(update.__dict__)
     payload = {
         message.poll.id: {
             "chat_id": update.effective_chat.id,
