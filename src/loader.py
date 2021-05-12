@@ -30,8 +30,9 @@ class Loader:
 
     @classmethod
     def handler(cls, app):
-        app = App(handler=app)
-        cls._APPS.append(app)
+        app_handler = App(handler=app)
+        cls._APPS.append(app_handler)
+        return app
 
     @classmethod
     def setup(cls, dispatcher):
