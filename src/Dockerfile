@@ -10,4 +10,4 @@ RUN pip install --upgrade pip \
         && pip install -r src/requirements.txt
 ENV APP_DIR /src
 EXPOSE 5000
-CMD ["python", "src/main.py"]
+CMD ["python3.8", "src/main.py"]
