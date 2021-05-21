@@ -24,24 +24,11 @@ service:
   type: ClusterIP
   port: 80
 
-ingress:
-  enabled: false
-  annotations: {}
-  hosts:
-    - host: chart-example.local
-      paths:
-      - path: /
-        backend:
-          serviceName: chart-example.local
-          servicePort: 80
-  tls: []
-
-resources: {}
 
 autoscaling:
   enabled: false
   minReplicas: 1
-  maxReplicas: 100
+  maxReplicas: 3
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
 
