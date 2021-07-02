@@ -5,6 +5,7 @@ import random
 from importlib import import_module
 
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+from flask import Flask, request
 
 from loader import LoaderApps
 from settings import TOKEN, APPS
@@ -17,6 +18,12 @@ STICKERS = [
     "CAACAgEAAxkBAAECSthgmoY7PmF5uSsaeUvY8ZlPHmYieAACTQIAAnTnKwLmJx6dp10G6B8E",
     "CAACAgEAAxkBAAECStpgmoZc2O9WCrIBuTuXHGymu_f_gAACfAADv4XHBbjt-hzAn-V2HwQ"
 ]
+
+app = Flask(__name__)
+
+@app.route('/healthz', methods=['GET'])
+def healthcheck():
+    return True, "OK"
 
 
 def features_discovery():
@@ -95,6 +102,7 @@ def main():
 
 if __name__ == '__main__':
 
+    app.run(host='0.0.0.0', port=80)
     BASE_PATH = os.path.dirname(os.path.abspath(__file__))
     logger.info(f"Injecting project path: {BASE_PATH}")
     # Inserting project path o pythonpath
